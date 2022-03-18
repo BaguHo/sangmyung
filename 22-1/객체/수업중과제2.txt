@@ -1,0 +1,49 @@
+클래스 - 변수 - 메서드
+절차지향과 객체 지향의 차이점
+객체 지향 프로그래밍의 특징 -> 상속 외워두기
+
+3~4주차 계획
+식별자는 데이터의 이름짓기이다.
+데이터 타입에 대해서 알아보고 
+c언어에서 scanf를 java에서는 어떻게 하는지 알아본다.
+그리고 기본 사칙연산과 for, while문 같은 반복문과
+if, switch같은 조건문을 배우게 된다.
+
+데이터타입에서 수를 나타내는 타입이 많은 이유는 
+범위가 그만큼 다양하기 때문이다.
+논리타입 boolean(8bit) 
+정수타입 byte(8bit), short(16it), int(32bit), long(64bit)
+문자타입 char(16bit) 
+실수타입, float(32bit), double (64bit)
+클래스타입 string
+
+중요!!**문자의 기본값은 null, 논리의 기본값은 false**
+
+64비트 데이터타입을 32비트 데이터타입에다가 넣으면 
+앞에 32bit는 짤리고 뒤에 32bit가 들어가는데 이 과정에서 
+데이터 손실이 있으므로 컴파일 에러가 나온다.
+
+문자열 + 숫자는 연결자이다
+        char c = 'a';
+        // char c = 65;
+        // char c = '\u0041';
+        // char c = "A";  -> A는 문자가 아니라 문자열이므로 오류
+
+        
+        boolean condition = true;        
+        int var =1;
+        
+        final double PI; // final은 상수값으로 만듦
+        PI = 3.141592;
+        System.out.println(PI);
+
+
+float f = (float)3.14; -> type casting(특정한 타입으로 변환하고 싶을 때)
+
+byte b = (byte)300;
+
+
+
+
+
+
