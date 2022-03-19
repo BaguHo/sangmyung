@@ -13,56 +13,56 @@
 //main 순서 1. 다항식 입력함수 호출 2. 입력된 다항식 출력 3. 특정 x값 입력 4. 다항식 계산 결과 출력
 //반복문장이용 x값 여러번 입력 또 다른 다항식 입력
 
-typedef struct __polynomial{
+typedef struct __polynomial {
     int degree;
     double coef[MAX_DEGREE];
 } polynomial;
 
-void insert_poly(polynomial *p){
+void insert_poly(polynomial* p) {
     printf("다항식의 최고차수를 입력해주세요\n");
     scanf("%d", &p->degree);
     printf("각 항의 계수를 입력해주세요\n");
     //계수에서 에러
-    for(int i = 0; i <= (*p).degree; i++){
+    for (int i = 0; i <= (*p).degree; i++) {
         scanf("%lf", &p->coef[i]);
     }
 }
 
-void print_poly(polynomial *p){
-    for(int i = 0; i <= (*p).degree; i++){
-        if(i == (*p).degree){
+void print_poly(polynomial* p) {
+    for (int i = 0; i <= (*p).degree; i++) {
+        if (i == (*p).degree) {
             printf("%.2lf * x ^ %d ", p->coef[i], p->degree - i);
             printf("\n");
         }
-        else{
+        else {
             printf("%.2lf * x ^ %d + ", p->coef[i], p->degree - i);
         }
     }
 }
 
-double insert_x(polynomial p){
+double insert_x(polynomial p) {
     double result = 0;
     double x;
     int token = 1;
-    while(token == 1){
+    while (token == 1) {
         int temp;
         printf("0. 뒤로가기\n");
         printf("1. x 대입\n");
         scanf("%d", &temp);
-        if(temp == 0){
+        if (temp == 0) {
             token = 0;
             return -1;
         }
-        else if(temp == 1){
-            int temp;
+        else if (temp == 1) {
+            int temp = 0;
             printf("x를 입력하세요\n");
             scanf("%lf", &x);
-            for(int i = 0; i < p.degree; i++){
-                result = p.coef[i];    
-                for(int k = 0; k < p.degree - i; k++){
+            for (int i = 0; i < p.degree; i++) {
+                result = p.coef[i];
+                for (int k = 0; k < p.degree - i; k++) {
                     result *= x;
                 }
-                temp += result;
+                temp += (int)result;
             }
             return temp;
         }
@@ -72,10 +72,10 @@ double insert_x(polynomial p){
     return printf("ERROR\n");
 }
 
-int main(){
-    polynomial x = {0, {0, }};
+int main() {
+    polynomial x = { 0, {0, } };
     int token;
-    while(1){
+    while (1) {
         printf("0. 프로그램 종료\n");
         printf("1. 다항식 입력\n");
         scanf("%d", &token);
@@ -87,7 +87,7 @@ int main(){
         case 1:
             insert_poly(&x);
             print_poly(&x);
-            if(insert_x(x) == -1)
+            if (insert_x(x) == -1)
                 break;
             else
                 printf("x를 입력한 값: %.2lf\n", insert_x(x));
@@ -95,7 +95,7 @@ int main(){
         default:
             printf("0. 프로그램 종료\n");
             printf("1. 다항식 입력\n");
-            scanf("%d", token);
+            scanf("%d", &token);
             break;
         }
     }
