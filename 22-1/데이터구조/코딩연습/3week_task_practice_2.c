@@ -25,13 +25,12 @@ void insert_poly(polynomial *p, int A, int B){
     int count_term_A = A;
     int count_term_B = B;
 
-
     //A, B 다항식의 계수와 차수를 입력받을 때 
     printf("A 다항식의 계수와 차수를 순서대로 입력하라.\n");
     for(int i = 0; i < count_term_A; i++)
         scanf("%lf %d", &p[i].coef, &(p[i].degree));
     printf("B 다항식의 계수와 차수를 순서대로 입력하라.\n");
-    for(int i = count_term_A + 1; i < count_term_A + count_term_B; i++)
+    for(int i = count_term_A; i < count_term_A + count_term_B; i++)
         scanf("%lf %d", &p[i].coef, &p[i].degree);
 }
 
@@ -41,69 +40,76 @@ void print_poly(polynomial *p, int A, int B){
 
     for(int i = 0; i < count_term_A; i++){
         if(i + 1 == count_term_A)
-            printf("%lfx^%d\n", p[i].coef, p[i].degree);
+            printf("%.2lfx^%d\n", p[i].coef, p[i].degree);
         else
-            printf("%lfx^%d + ", p[i].coef, p[i].degree);
+            printf("%.2lfx^%d + ", p[i].coef, p[i].degree);
     }
-    for(int i = count_term_A; i <count_term_A + count_term_B; i++){
+    for(int i = count_term_A; i < count_term_A + count_term_B; i++){
         if(i + 1 == count_term_A + count_term_B)
-            printf("%lfx^%d\n", p[i].coef, p[i].degree);
+            printf("%.2lfx^%d\n", p[i].coef, p[i].degree);
         else
-            printf("%lfx^%d + ", p[i].coef, p[i].degree);
+            printf("%.2lfx^%d + ", p[i].coef, p[i].degree);
     }
     printf("============================================\n");
 }
 
-//차수별로 sort를 어떻게 해야할지 모르겠다.
-int sort_poly(polynomial *p, int count_term_A, int count_term_B){
+void sort_poly(polynomial *p, int count_term_A, int count_term_B){
     polynomial temp;
-    int max = p[0].degree;
+    int idx;
     for(int i = 0; i < count_term_A + count_term_B; i++){
+        idx = 0;
+        polynomial max = p[i];
+        idx = i;
         for(int k = i; k < count_term_A + count_term_B; k++){
-            if(max < p[i].degree){
-                max = p[i].degree;
+            if(max.degree < p[k].degree){
+                max = p[k];
+                idx = k;   
             }
         }
+        temp = p[i];
+        p[i] = max;
+        p[idx] = temp;
     }
-}
-
-int compare(int a, int b){
-    if(a > b)
-        return 1;
-    else if (a < b)
-        return -1;
-    else
-        return 0;
 }
 
 //A 다항식과 B 다항식을 더한 다항식을 보여주고 X값을 입력받는다.
 double sum_poly(polynomial *p, int count_term_A, int count_term_B){
     int x;
-    polynomial result[MAX_DEGREE] = {0, {0, }};
-    polynomial max;
-    int idx;
+    double result = 0;
     for(int i = 0; i < count_term_A + count_term_B; i++){
-        max.degree = p[i].degree;
-        idx = 0;
-        for(int k = i; k <count_term_A + count_term_B; k++){
-            if(max.degree < p[k].degree){
-                max = p[k];
-                idx = k;
-            }
-        }        
-        p[i] = max;
+        if(i + 1 == count_term_A + count_term_B)
+            printf("%.2lfx^%d\n", p[i].coef, p[i].degree);
+        else
+            printf("%.2lfx^%d + ", p[i].coef, p[i].degree);
     }
-    //다항식을 더하고 p배열에 저장하는 것까지 완료
-    //p배열 print하고 x값 받아서 값 반환하는 것까지가 해야하는 작업
+
+    printf("x값을 넣어주세요\n");
+    scanf("%d", &x);
+    
+    for(int i = 0; i < count_term_A + count_term_B; i++){
+        double temp = 0;
+        for(int k = 0; k < p[i].degree; k++){
+            if(k == 0)
+                temp += p[i].coef;
+            else
+                temp *= x;
+        }
+        result += temp;
+    }
+    printf("결과값: %.2lf\n", result);
 }
 
 int main(){
-    polynomial x[MAX_DEGREE] = {0, {0, }};
-    int token;
+    polynomial x[MAX_DEGREE] = {{0, }};
     int count_term_A;
     int count_term_B;
     printf("A 다항식의 항의 개수는? \n");
     scanf("%d", &count_term_A);
     printf("B 다항식의 항의 개수는? \n");
     scanf("%d", &count_term_B);
+    insert_poly(&x[0], count_term_A, count_term_B);
+    print_poly(&x[0], count_term_A, count_term_B);
+    sort_poly(&x[0], count_term_A, count_term_B);
+    printf("==========================\n");
+    sum_poly(&x[0], count_term_A, count_term_B);
 }
