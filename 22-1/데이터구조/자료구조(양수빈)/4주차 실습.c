@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+
 typedef struct {
 	char id[11];
 	char password[7];
@@ -14,7 +15,7 @@ int search(users *str, int top, int bottom, users test) {
 
 	int mid = (top + bottom) / 2;
 
-	if (strcmp(test.id,str[mid].id)==0) {
+	if (strcmp(test.id, str[mid].id)==0) {
 		return mid;
 	}
 	else {
@@ -41,7 +42,7 @@ int change_password(users* str, users* test,int result) {
 		}
 		else {
 			printf("변경할 비밀번호를 입력하세요: ");
-			scanf("%s", &test2_password);//여기부터 안된당르민엄; ㄴ아ㅓㄹ; 만얼
+			scanf("%s", test2_password);//여기부터 안된당르민엄; ㄴ아ㅓㄹ; 만얼
 			printf("%s", test2_password);
 			strcpy(str[result].password, test2_password);
 
@@ -60,6 +61,7 @@ int change_password(users* str, users* test,int result) {
 		return 0;
 	}
 }
+
 int main(void) {
 	users str[9] = {
 		{"apple","123411"},
