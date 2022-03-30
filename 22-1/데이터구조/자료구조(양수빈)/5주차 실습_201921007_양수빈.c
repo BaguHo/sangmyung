@@ -2,7 +2,6 @@
 // (2) SparseMatrix 구조의 변수 내용을 2차원 배열구조로 보이도록 출력하는 함수 만들기
 // (3) SparseMatrix 타입의 두 희소행렬을 덧셈 또는 뺄셈하는 함수만들기(하나의 함수)
 
-
 // main() 에서는
 // 1. 함수를 호출해서, 배열 A,B,C,D를 각각 SparseMatrix 타입 변수 SA, SB, SC, SD에 저장하기
 // 2. 메뉴 1,2,3,4에 따라서 아래의 연산 결과로  SparseMatrix 타입의 결과 구하기
@@ -84,7 +83,8 @@ SparseMatrix cal_matrix(SparseMatrix a, SparseMatrix b) {//계산 함수
 
 	//덧셈
 	printf("==================plus======================\n");
-	c.rows = a.rows;//a와 b가 크기가 같음
+	c.rows = a.rows
+	;//a와 b가 크기가 같음
 	c.cols = a.cols;
 	c.terms = 0;//채우고 넣기위해 0으로 초기화
 	int ca = 0, cb = 0, cc = 0;//각 행열의 data 배열의 index

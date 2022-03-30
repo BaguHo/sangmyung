@@ -18,12 +18,12 @@ typedef struct {
     char password[7];
 }User;
 
-int BinarySearchId(User *p, int top, int bottom, User test){
+int BinarySearchId(User *p, int top, int bottom, User user){
     if(top > bottom){
         return -1;
     }
-    int mid = top * bottom / 2;
-    int temp = strcmp(test.id, p[mid].id);
+    int mid = (top + bottom) / 2;
+    int temp = strcmp(user.id, p[mid].id);
     if(temp == 0){
         return mid;
     }
@@ -35,7 +35,7 @@ int BinarySearchId(User *p, int top, int bottom, User test){
             bottom = mid;
         }
     }
-    BinarySearchId(p, top, bottom, test); 
+    BinarySearchId(p, top, bottom, user); 
 }
 
 void PrintPassword(User *p, int user_idx){

@@ -8,29 +8,25 @@ typedef struct{
     struct Node* next;
 }Node;
 
+// 단순연결리스트
 // 필요한 ADT
-// push, pop, GetData, IsEmpty, InitList
+// Insert, Delete, GetData, IsEmpty, InitList
 
 void InitList(){
     //head, cur, tail
     Node* head = malloc(sizeof(Node));
-    Node* tail = malloc(sizeof(Node));
     head->next = NULL;
-    tail->next = NULL;
 }
 
-void Push(Node* head, Node* tail, Data data){
+void Push(Node* head, Data data){
     Node* new_node = malloc(sizeof(Node));
     new_node->data = data;
     if(head->next == NULL){
         head->next = new_node;
     }
-    else{
-        tail->next = new_node;
-    }
 }
- 
-void Pop(Node* head, Node* tail){
+
+void Pop(Node* head){
     if(head->next == NULL){
         printf("데이터가 없습니다\n");
     }
@@ -38,6 +34,7 @@ void Pop(Node* head, Node* tail){
         //여기서 tail의 데이터를 pop할거면 그 이전의 데이터가 필요한데 이것을 Node* pre로 해결해야하나
         //아니면 Node* cur를 사용해야하나
         //pre를 사용하면 이중연결리스트가 되어버리는데 단순연결 리스트안에서 문제를 해결할 수는 없을까?
+        //pop이 아니라 delete를 사용해야할 것 같다.
 
     }
 }

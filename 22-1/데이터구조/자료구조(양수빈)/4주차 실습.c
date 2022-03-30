@@ -1,12 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-
 typedef struct {
 	char id[11];
 	char password[7];
 }users;
-
 
 int search(users *str, int top, int bottom, users test) {
 	if (top > bottom) {
