@@ -31,15 +31,14 @@ typedef struct __node{
 
 typedef struct{
     Node* head;
-    int count;
 }Stack;
 
 void InitStack(Stack *s){
     s->head = NULL;
 }
 
-int IsEmpty(Stack s){
-    if(s.count == 0){
+int IsEmpty(Stack *s){
+    if(s->head == NULL){
         return TRUE;
     }
     else{
@@ -58,7 +57,7 @@ Data Pop(Stack *s){
     Node* temp_node;
     Data data;
 
-    if(IsEmpty(*s)){
+    if(IsEmpty(s)){
         printf("스택이 비었습니다\n");
         exit(-1);
     }
@@ -67,8 +66,14 @@ Data Pop(Stack *s){
 
     s->head = s->head->next;
     free(temp_node);
-    return data;
-    
+    return data;   
+}
+
+Data Peek(Stack *s){
+    if(IsEmpty(s)){
+        printf("ERROR");
+        exit(-1);
+    }
 }
 
 int main(){

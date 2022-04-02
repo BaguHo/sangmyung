@@ -1,22 +1,6 @@
 #include<stdio.h>
 #define MAX_TERM 101
 
-// ADT
-// int PlusMatrix(int p), int TransformToCompressionMatrix(int p)
-// int SortSparseMatrix(int matrix) , int TransposeCompressionMatrix(int p)
-// 번외) InitMatrix , void PrintMatrix(int p)함수를 만들어서 쓰지는 못할까?
-
-// *(matrix_a + i) -> matrix_a[i], 2차원 배열에서도 똑같이 기능
-
-/*
-희소행렬을 덧셈할 때, 같은 행, 같은 열에 있는 두 값을 합했을 때, 결과가 0이 되면,
-희소행렬에 저장하지 않아야 합니다.
-A행렬의 i,j위치에 3이 있고, B행렬의 i,j위치에 -3이 있으면, 당연히 덧셈결과는 0이 되고,
-약속에 따라서 희소행렬 구조에 저장되지 않아야 합니다.
-그리고 저장된 결과는 행우선이어야 합니다.
-수업내용에서 충분히 예제를 설명했습니다.
-*/
-
 typedef struct{
     int row;
     int column;
