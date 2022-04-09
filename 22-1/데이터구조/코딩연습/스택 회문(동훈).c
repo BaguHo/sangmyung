@@ -72,7 +72,6 @@ void comparison(char* data)
 	{
 		data[i] = tolower(data[i]);
 		Push(&s, data[i]);
-
 	}
 	printf("%s\n", data);
 	char ch;

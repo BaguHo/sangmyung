@@ -83,33 +83,130 @@ Data Peek(Stack *s)
         return s->node[s->top];
     }
 }
+//여기서 입력을 또 안받는다
+void Palindrome()
+{
+    char str[MAX_LENGTH];
+    printf("3번문제 - 문자열을 입력해주세요\n");
+    scanf("%[^\n]s", str);
+    Stack s;
+    InitStack(&s);
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (('a' <= str[i] && str[i] <= 'z') || ('A' <= str[i] && str[i] <= 'Z'))
+        {
+            str[i] = tolower(str[i]);
+            Push(&s, str[i]);
+        }
+    }
+    //스택을 이용하여 회문 검사
+    char ch;
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if ('a' <= str[i] && str[i] <= 'z')
+        {
+            ch = Pop(&s);
+            if (ch == str[i])
+            {
+                printf("%c %c\n", ch, str[i]);
+            }
+            else
+            {
+                printf("회문이 아닙니다\n");
+                break;
+            }
+        }
+        if (str[i + 1] == '\0')
+        {
+            printf("회문입니다\n");
+        }
+    }
+}
 
-void Palindrome(char *str)
+void First()
 {
     Stack s;
     InitStack(&s);
-
+    char result[MAX_LENGTH];
+    printf("괄호를 입력해주세요\n");
+    scanf("%s", result);
+    for (int i = 0; result[i] != '\0'; i++)
+    {
+        switch (result[i])
+        {
+        case '(':
+        case '[':
+        case '{':
+            Push(&s, result[i]);
+            printf("%d ", s.top + 1);
+            break;
+        case ')':
+            if (Peek(&s) == '(')
+            {
+                printf("%d ", s.top + 1);
+                Pop(&s);
+            }
+        case ']':
+            if (Peek(&s) == '[')
+            {
+                printf("%d ", s.top + 1);
+                Pop(&s);
+            }
+        case '}':
+            if (Peek(&s) == '{')
+            {
+                printf("%3d ", s.top + 1);
+                Pop(&s);
+            }
+        default:
+            break;
+        }
+    }
+    printf("\n");
+}
+// 2번문제에서 출력이 이상함
+void Second()
+{
+    Stack s;
+    InitStack(&s);
+    char str[MAX_LENGTH];
+    char result[MAX_LENGTH];
+    int result_idx = 0;
+    printf("2번문제 - 문자열을 입력해주세요\n");
+    scanf("%s", str);
     for (int i = 0; str[i] != '\0'; i++)
     {
-        str[i] = tolower(str[i]);
-        Push(&s, str[i]);
+        if (i == 0)
+        {
+            Push(&s, str[0]);
+        }
+        else if (str[i] == str[i - 1])
+        {
+            Push(&s, str[i]);
+        }
+        else
+        {
+            int i;
+            char temp;
+            result[result_idx + 1] = Pop(&s);
+            for (i = 1; IsEmpty(&s); i++)
+            {
+                temp = Pop(&s);
+            }
+            result[result_idx] = i;
+            result_idx += 2;
+        }
     }
-    //스택을 이용하여 회문 검사
-    printf("%s\n", str);
-
-    for (int i = 0; str[i] != '\0'; i++){
-        
+    for (int i = 0; result[i] != '\0'; i++)
+    {
+        printf("%c", result[i]);
     }
+    printf("\n");
 }
 
 int main()
 {
-    Stack s;
-    InitStack(&s);
     int qurter;
-    char result[MAX_LENGTH];
-    char str[MAX_LENGTH];
-    int result_idx = 0;
     printf("몇 번 문제를 푸시겠습니까?\n");
     printf("1. 괄호 입력 문제\n");
     printf("2. 문자열 압축 문제\n");
@@ -118,64 +215,14 @@ int main()
 
     if (qurter == 1)
     {
-        printf("괄호를 입력해주세요\n");
-        scanf("%s", result);
-        int idx = 1;
-        for (int i = 0; result[i] != '\0'; i++)
-        {
-            if (result[i] == '(')
-            {
-                printf("%d ", idx);
-                Push(&s, idx++);
-            }
-            else if (result[i] == ')')
-            {
-                idx--;
-                printf("%d ", idx);
-                Pop(&s);
-            }
-        }
-        printf("\n");
+        First();
     }
     else if (qurter == 2)
     {
-        printf("2번문제 - 문자열을 입력해주세요\n");
-        scanf("%s", str);
-        for (int i = 0; str[i] != '\0'; i++)
-        {
-            if (i == 0)
-            {
-                Push(&s, str[0]);
-            }
-            else if (str[i] == str[i - 1])
-            {
-                Push(&s, str[i]);
-            }
-            else
-            {
-                int i;
-                char temp;
-                result[result_idx + 1] = Pop(&s);
-                for (i = 1; IsEmpty(&s); i++)
-                {
-                    temp = Pop(&s);
-                }
-                result[result_idx] = i;
-                result_idx += 2;
-            }
-        }
-        for (int i = 0; result[i] != '\0'; i++)
-        {
-            printf("%c", result[i]);
-        }
-        printf("\n");
+        Second();
     }
     else if (qurter == 3)
     {
-        printf("3번문제 - 문자열을 입력해주세요\n");
-        //입력을 그냥 건너뛰어 버림
-        // gets(str);
-        scanf("%[^\n]s", str);
-        Palindrome(str);
+        Palindrome();
     }
 }
