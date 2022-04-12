@@ -129,7 +129,7 @@ int main(void) {
 
 		if (is_empty(&s)) {
 			printf("실패\n");
-			return;
+			return 0;
 		}
 		else {
 			here = pop(&s);
@@ -143,7 +143,6 @@ int main(void) {
 	for (int i = 0; i < a; i++) {
 		printf("%d번째 움직인좌표: (%d,%d)\n", i + 2, rec[i].r, rec[i].c);
 	}
-
 
 	return 0;
 }
