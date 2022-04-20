@@ -1,0 +1,41 @@
+선형 stack, queue
+비선형 tree graph
+큐에서 값을 꺼낼 때 IsEmpty를 통해서 비어있는지 안비어있는지 확인한다
+
+선형큐
+ - Enqueue
+중요 ** q->data[++(q->rear)] = item; **
+ - Dequeue
+중요 ** q->data[++(q_front)]; **
+
+큐의 응용
+ - 작업 스케줄링
+
+원형큐
+front == rear -> 공백상태
+front % MAX_SIZE == (rear + 1) % MAX_SIZE -> 포화상태
+(마지막 한 칸은 채우지 않음)
+// front + 1 부터 채움
+ - IsFull
+** ((q->rear + 1) % MAX_SIZE == q->front) **
+ - IsEmpty
+
+front = MAX_SIZE - 2;
+rear = 3;
+일 때, 어떻게 예쁘게 출력할 건가? 
+-> % MAX_SIZE 
+
+큐의 응용
+ - 시뮬레이션
+ - 은행창구 문제를 큐로 구현해보기(중간고사에 나올수도 있음)
+
+
+
+
+
+
+
+
+
+
+
