@@ -1,6 +1,16 @@
 #include<stdio.h>
 #define MAX_TERM 101
 
+// (1) 이차원 배열에 저장된 희소행렬을 SparseMatrix 구조로 저장하는 함수
+// (2) 두 개의 SparseMatrix를 매개변수로 받아서 덧셈한 결과로 SparseMatrix를 반환하는 함수
+// (3) SparseMatrix에 저장된 내용을 0을 포함한 이차원 형렬 형태로 출력하는 함수
+
+// main()에서 테스트하기
+// 위 배열 a[][], b[][], c[][]를 (1)을 이용하여 각각 SparseMatrix A, B, C로 변환하기
+// A+B를 (2)로 계산하고,반환된 결과 SparseMatrix를 (3)을 이용하여 출력하기
+// A+C를 (2)로 계산하여 반환된 결과 SparseMatrix를 (3)을 이용하여 출력하기
+// B+C를 (2)로 계산하여 반환된 결과 SparseMatrix를 (3)을 이용하여 출력하기
+
 typedef struct{
     int row;
     int column;
@@ -20,17 +30,17 @@ void PrintSparseMatrix(SparseMatrix p){
     for(int i = 0; i < p.row_term; i++){
         if(p.data[idx].row != i){
             for(int k = 0; k < p.column_term; k++){
-                printf("0 ");
+                printf("0  ");
             }
             printf("\n");
         }
         else{ // p.data[idx].row == i
             for(int k = 0; k < p.column_term; k++){
                 if(p.data[idx].column == k && p.data[idx].row == i){
-                    printf("%d ", p.data[idx++].data);
+                    printf("%d  ", p.data[idx++].data);
                 }
                 else{
-                    printf("0 ");
+                    printf("0  ");
                 }
             }
             printf("\n");

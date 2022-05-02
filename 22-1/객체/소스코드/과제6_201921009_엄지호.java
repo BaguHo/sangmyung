@@ -13,8 +13,8 @@ public class 과제6_201921009_엄지호 {
         char[] arr = str.toCharArray();
         int result = 0;
         char ch;
-        int num1 = arr[0] - '0';
-        int num2 = arr[2] - '0';
+        int num1 = Character.getNumericValue(arr[0]);
+        int num2 = Character.getNumericValue(arr[2]);
         switch (arr[1]) {
             case '-':
                 result = num1 - num2;

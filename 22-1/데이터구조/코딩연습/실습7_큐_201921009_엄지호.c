@@ -197,8 +197,8 @@ void Bank(){
             customer.id = total_customer++;
             customer.arrival_time = clock;
             customer.service_time = rand() % 3+1;
-                Enqueue2(&q, customer);
-                printf("고객 %d이 %d분에 들어옵니다. 업무처리시간: %d분\n", customer.id, customer.arrival_time, customer.service_time);
+            Enqueue2(&q, customer);
+            printf("고객 %d이 %d분에 들어옵니다. 업무처리시간: %d분\n", customer.id, customer.arrival_time, customer.service_time);
         }
         if(service_time > 0){
             printf("은행원 1 고객%d 업무를 처리중입니다.\n", service_customer);

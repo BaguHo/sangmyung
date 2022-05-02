@@ -14,7 +14,7 @@ typedef struct __polynomial {
 } polynomial;
 
 // p1 - p2
-polynomial minus_poly(polynomial p1, polynomial  p2){
+polynomial MinusPolynomial(polynomial p1, polynomial  p2){
     polynomial result = {0, {0, }};
     result.degree = max(p1.degree, p2.degree);
     int idx = 0;
@@ -40,6 +40,7 @@ polynomial minus_poly(polynomial p1, polynomial  p2){
             }
         }
     }
+    // 
     for(int i = 0; i < result.degree; i++){
         if(result.coef[i] == 0){
             for(int k = i; k <= result.degree; k++){
@@ -51,7 +52,7 @@ polynomial minus_poly(polynomial p1, polynomial  p2){
     return result;
 }
 
-void insert_poly(polynomial* p) {
+void InsertPolynomial(polynomial* p) {
     printf("다항식의 최고차수를 입력해주세요\n");
     scanf("%d", &p->degree);
     printf("각 항의 계수를 입력해주세요\n");
@@ -61,7 +62,7 @@ void insert_poly(polynomial* p) {
 }
 
 //result를 출력하였을 때 0부터 출려되는 문제
-void print_poly(polynomial p) {
+void PrintPolynomial(polynomial p) {
     for (int i = 0; i <= p.degree; i++) {
         if (i == p.degree) {
             printf("%.2lfx^%d \n", p.coef[i], p.degree - i);
@@ -72,7 +73,7 @@ void print_poly(polynomial p) {
     }
 }
 
-double eval_poly(polynomial p) {
+double EvaluatePolynomial(polynomial p) {
     double result = 0;
     double x;
     int token = 1;
@@ -119,16 +120,16 @@ int main() {
             return 0;
             break;
         case 1:
-            insert_poly(&x);
-            insert_poly(&y);
+            InsertPolynomial(&x);
+            InsertPolynomial(&y);
             printf("================================================\n");
             printf("다항식 1 - 다항식 2\n");
-            print_poly(x);
-            print_poly(y);
+            PrintPolynomial(x);
+            PrintPolynomial(y);
             printf("================================================\n");
-            print_poly(minus_poly(x,y));
+            PrintPolynomial(MinusPolynomial(x,y));
             printf("================================================\n");
-            double num = eval_poly(minus_poly(x,y));
+            double num = EvaluatePolynomial(MinusPolynomial(x,y));
             if (num == -1)
                 break;
             else{

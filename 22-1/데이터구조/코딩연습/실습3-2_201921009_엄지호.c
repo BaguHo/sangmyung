@@ -19,7 +19,7 @@ typedef struct __polynomial{
     double coef;
 } polynomial;
 
-void insert_poly(polynomial *p, int count_term_A, int count_term_B){
+void InsertPolyNomial(polynomial *p, int count_term_A, int count_term_B){
     //A, B 다항식의 계수와 차수를 입력받을 때 
     printf("A 다항식의 계수와 차수를 순서대로 입력하라.\n");
     for(int i = 0; i < count_term_A; i++)
@@ -29,7 +29,7 @@ void insert_poly(polynomial *p, int count_term_A, int count_term_B){
         scanf("%lf %d", &p[i].coef, &p[i].exponent);
 }
 
-void print_poly(polynomial *p, int A, int B){
+void PrintPolynomial(polynomial *p, int A, int B){
     int count_term_A = A;
     int count_term_B = B;
 
@@ -49,7 +49,7 @@ void print_poly(polynomial *p, int A, int B){
 }
 
 //내림차순
-void sort_poly(polynomial *p, int count_term_A, int count_term_B){
+void SortPolynomial(polynomial *p, int count_term_A, int count_term_B){
     polynomial temp;
     int idx;
     for(int i = 0; i < count_term_A + count_term_B; i++){
@@ -77,7 +77,7 @@ void sort_poly(polynomial *p, int count_term_A, int count_term_B){
     }
 }
 
-void minus_poly(polynomial *p, int *count_term_A, int *count_term_B){
+void MinusPolynomial(polynomial *p, int *count_term_A, int *count_term_B){
     int Ae = (*count_term_A) - 1;
     int Be = (*count_term_A) + (*count_term_B);
     int As = 0;
@@ -140,7 +140,7 @@ void minus_poly(polynomial *p, int *count_term_A, int *count_term_B){
     }
 }
 
-double eval_poly(polynomial *p, int count_term_A, int count_term_B){
+double EvaluatePolynomial(polynomial *p, int count_term_A, int count_term_B){
     int x;
     double result = 0;
     printf("x값을 넣어주세요\n");
@@ -174,11 +174,11 @@ int main(){
             scanf("%d", &count_term_A);
             printf("B 다항식의 항의 개수는? \n");
             scanf("%d", &count_term_B);
-            insert_poly(&x[0], count_term_A, count_term_B);
-            sort_poly(&x[0], count_term_A, count_term_B);
-            minus_poly(&x[0], &count_term_A, &count_term_B);
-            print_poly(&x[0], count_term_A, count_term_B);
-            printf("x 대입값: %lf\n", eval_poly(&x[0], count_term_A, count_term_B));
+            InsertPolyNomial(&x[0], count_term_A, count_term_B);
+            SortPolynomial(&x[0], count_term_A, count_term_B);
+            MinusPolynomial(&x[0], &count_term_A, &count_term_B);
+            PrintPolynomial(&x[0], count_term_A, count_term_B);
+            printf("x 대입값: %lf\n", EvaluatePolynomial(&x[0], count_term_A, count_term_B));
         }
     }//minus에서 에러
 }
