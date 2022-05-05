@@ -1,0 +1,26 @@
+IR <- Mem[PC]
+1. PC -> MAR
+2. Read 신호
+3. IR <- MBR
+
+교통정리(MUX사용)
+
+상태 레지스터(SR)
+연산의 결과 저장
+
+RAM
+MAR->address
+MBR-> datain
+MBR<-dataout
+-R/W
+CP-->
+
+p.11
+OV = 1 (???)
+
+
+
+
+
+
+

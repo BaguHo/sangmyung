@@ -1,0 +1,5 @@
+주제: 도서 검색 프로그램(연결리스트를 이용한)
+이중 연결 리스트를 이용하여 구현
+
+void InitList(List * plist)
+void InsertData(List* plist, 
