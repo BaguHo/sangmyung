@@ -37,14 +37,13 @@ typedef struct __node{
 typedef struct{
     Node* head;
     Node* cur;
-    Node* tail;
     int numOfData;
 }List;
+// head에 더미노드가 들어있는 리스트
 
 void InitList(List* plist){
-    plist->head = NULL;
-    plist->cur = NULL;
-    plist->tail = NULL;
+    plist->head = (Node*)malloc(sizeof(Node));
+    plist->head->next = NULL;
     plist->numOfData = 0;
 }
 
@@ -52,53 +51,27 @@ void InsertSortedData(List* plist, Element data){
     Node* new_node = (Node*)malloc(sizeof(Node));
     new_node->data = data;
 
-    if (plist->head == NULL) {
-        new_node->next = plist->head;
-        plist->head = new_node;
-        plist->numOfData++;
+    Node* p = plist->head;
+    while(p->next != NULL && strcmp(p->next->data.title, data.title) <= 0){
+        p = p->next;
     }
-    else {
-        Node* p;
-        for (p = plist->head; p->next != NULL; p = p->next) {
-            // head에 들어가야하는 경우
-            if(strcmp(plist->head->data.title, data.title) < 0){
-                new_node->next = plist->head;
-                plist->head = new_node;
-                break;
-            }
-            if (strcmp(p->next->data.title, data.title) < 0) {
-                new_node->next = p->next;
-                p->next = new_node;
-                break;
-            }
-        }
-        if(p->next == NULL){
-            p->next = new_node;
-            new_node->next = NULL;
-            plist->numOfData++;
-        }
-    }
-}
-
-void InsertData(List* plist, Element data){
-    Node* new_node = (Node*)malloc(sizeof(Node));
-    new_node->data = data;
-    if(plist->numOfData == 0){
-        plist->head = new_node;
-        plist->cur = new_node;
-        plist->tail = new_node;
-    }
-    else{
-        new_node->next = plist->cur->next;
-        plist->cur->next = new_node;
-        plist->tail = plist->cur->next;        
-    }
+    new_node->next = p->next;
+    p->next = new_node;
     plist->numOfData++;
 }
 
+void InsertNextPoint(List* plist, Element data){
+    Node* new_node = (Node*)malloc(sizeof(Node));
+    new_node->data = data;
+    
+    new_node->next = plist->cur->next;
+    plist->cur->next = new_node;
+    plist->cur = plist->cur->next;
+    plist->numOfData++;
+}
 
 void PrintList(List* plist){
-    for(Node* p = plist->head; p != NULL; p = p->next){
+    for(Node* p = plist->head->next; p != NULL; p = p->next){
         printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
             p->data.title, p->data.player, p->data.genre, p->data.year);
         printf("---------------------------------------------------------\n");
@@ -107,7 +80,7 @@ void PrintList(List* plist){
 }
 
 void PrintCurrentPoint(List* plist){
-    for(Node* p = plist->head; p != NULL; p = p->next){
+    for(Node* p = plist->head->next; p != NULL; p = p->next){
         if(p == plist->cur){
             printf("==================현재 노드====================\n");
             printf("제목: %s\n가수: %s\n장르: %c\n출시연도: %d\n", 
@@ -121,16 +94,34 @@ void PrintCurrentPoint(List* plist){
     printf("NULL\n");
 }
 
-Node* DeleteNextNode(List* plist){
+Node* SearchNode(List* plist){
+    char search_title[50];
+    printf("찾고자하는 노래 제목을 입력하세요\n");
+    scanf("%s", search_title);
+    for(Node* p = plist->head; p != NULL; p = p->next){
+        if(strcmp(search_title, p->data.title) == 0){
+            return p;
+        }
+    }
+    printf("찾고자하는 노래가 없습니다\n");
+    return 0;
+}
+
+Element DeleteNode(List* plist){
     if(plist->numOfData == 0){
         printf("List가 비어있습니다\n");
-        return 0;
+        exit(1);
     }
-    Node* remove_node;
-    remove_node = plist->cur->next;
-    plist->cur->next = plist->cur->next->next;
+    Node* remove_node = SearchNode(plist);
+    Element remove_data = remove_node->data;
+    Node* before = plist->head;
+    while(before->next != remove_node){
+        before = before->next;
+    }
+    before->next = remove_node->next;
+    free(remove_node);
     plist->numOfData--;
-    return remove_node;
+    return remove_data;
 }
 
 // plist->cur이 다음을 가리키게 하는 함수
@@ -145,23 +136,34 @@ int GetListLength(List* plist){
 int main(){
     List* list;
     InitList(list);
+    Element data;
+    Node* before;
     int temp = 0;
     while (1) {
-        printf("1. 프로그램 종료\n2. 입력\n3. 리스트 출력\n4. 리스트 길이\n");
+        printf("1. 프로그램 종료\n2. 입력\n3. 리스트 출력\n4. 리스트 길이 출력\n5. 노래 삭제\n");
         scanf("%d", &temp);
         printf("=======================================================================\n");
-        if (temp == 1)
-            break; 
-        else if(temp == 2){
-            Element data;
+        switch (temp)
+        {
+        case 1:
+            return 0;
+            break;
+        case 2:
             printf("노래 제목, 가수, 장르, 출시연도를 입력하세요\n");
             scanf("%s %s %c %d", data.title, data.player, &data.genre, &data.year);
             InsertSortedData(list, data);
-        }
-        else if(temp == 3)
+            break;
+        case 3:
             PrintList(list);
-        else if(temp == 4)
-            printf("리스트 길이: %d\n", GetListLength(list));    
+            break;
+        case 4:
+            printf("리스트 길이: %d\n", GetListLength(list));
+            break;
+        case 5:
+            DeleteNode(list);
+        default:
+            break;
+        }        
         printf("=======================================================================\n");
     }
 }

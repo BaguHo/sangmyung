@@ -1,0 +1,49 @@
+1. private 변수를 사용하면 어디에서 접근이 가능한가? 
+-> 내부 클래스, 내부 클래스의 메서드에서만 접근이 가능하다.
+
+2. private변수를 사용하여 캡슐화를 해보시오
+->
+class temp{
+	private int num;
+	temp(){
+		setNum(num);
+	}
+	public int setNum(int num){
+		return num = 1;
+	}
+}
+
+=======================================
+public class d10_1 {
+    public static void main(String[] args) {
+        Parent p = new Parent();
+        Child c = new Child();
+        Parent p2 = new Child();
+        System.out.println("p.x = " + p.x);
+        System.out.println("p2.x = " + p2.x);
+        System.out.println("c.x = " + c.x);
+    }
+}
+
+class Parent {
+    int x = 100;
+
+    void method() {
+        System.out.println("Parent method");
+    }
+}
+
+class Child extends Parent {
+    int x = 200;
+
+    void method() {
+        System.out.println("Child method");
+    }
+
+}
+
+상속에서 멤버변수가 중복되면 참조변수 타입에 의해서 정해지고
+메서드가 중복되면 실제 인스턴스의 타입에 정의된 메서드 호출
+
+인터페이스
+-> 추상클래스를 이용한 클래스(C언어의 ADT만 있는 헤더파일 느낌)

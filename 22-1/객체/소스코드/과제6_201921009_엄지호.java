@@ -8,16 +8,28 @@ public class 과제6_201921009_엄지호 {
 
         Scanner sc = new Scanner(System.in);
         String str = sc.nextLine();
-        System.out.println("계산값: " + Calculator(str));
+        Calculator temp = new Calculator();
+        System.out.println("계산값: " + temp.calculate(str));
+
     }
 
-    public static int Calculator(String str) {
+}
+
+class Calculator{
+    private int result;
+    private String num1;
+    private String num2;
+    private char operator;
+
+    Calculator(){
+        result = 0;
+        num1 = new String();
+        num2 = new String();
+        operator = '1';
+    }
+
+    public int calculate(String str){
         char[] arr = str.toCharArray();
-        int result = 0;
-        String num1 = new String();
-        String num2 = new String();
-        char operator = '1';
-        // string -> char array, for(char array), char array -> string, string -> int
         int i;
         for (i = 0; i < str.length(); i++) {
             if (arr[i] == '+' || arr[i] == '-' || arr[i] == '*' || arr[i] == '/') {
