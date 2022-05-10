@@ -4,32 +4,11 @@
 #include<time.h>
 #include<windows.h>
 
-// 연결 리스트 만들기
-// 삽입 연산 head, 중간, 마지막 위치에 삽입하는 함수
-// 저 위에 기능을 다 할 수 있는 하나의 함수 -> cur를 통한 데이터 선택 및 삭제
-
-// 삭제연산도 마찬가지
-// head가 하나도 없을 때를 언제나 생각해야 한다
-
-// 정렬되어 있는 단순연결리스트에서 값을 정렬해서 넣는 방법
-
-// 방문코드(처음부터 끝까지 스캔)
-// Count, Node* SearchValue(Node *head, Element x) 등등의 기능
-// 삽입, 삭제를 cur로 할까 아니면 value로 해야할까?
-// 두 개의 리스트를 합하는 함수
-// 1. 2개 다 NULL
-// 2. 둘 중 하나만 NULL
-// 3. 모두 다 NULL이 아님
-// 단순 연결 리스트에서 화살표 방향을 바꾸는 함수(역순으로, head도 바꿔줘야 함)
-
-// 연결리스트로 다항식 나타내기
-
 typedef struct __element {
     char title[50];
     char player[20];
     char genre;
     int year;
-    int time;
 }Element;
 
 typedef struct __node{
@@ -57,7 +36,7 @@ void InsertSortedData(List* plist, Element data){
     Node* new_node = (Node*)malloc(sizeof(Node));
     new_node->data = data;
 
-    Node* p = plist->head;
+    Node* p = plist->head->next;
     while(p != plist->head && strcmp(p->next->data.title, data.title) <= 0){
         p = p->next;
     }
@@ -65,7 +44,6 @@ void InsertSortedData(List* plist, Element data){
     new_node->pre = p;
     p->next = new_node;
     new_node->next->pre = new_node;
-    plist->cur = new_node;
     plist->numOfData++;
 }
 
@@ -88,50 +66,20 @@ void PrintList(List* plist){
     printf("NULL\n");
 }
 
-void PrintLastMusic(List* plist){
-    Node* p = plist->head->next;
-    Node* lasted_year = p;
-    while(p != plist->head){
-        if(p->data.year > lasted_year->data.year){
-            lasted_year->data.year = p->data.year;
-        }
-        p = p->next;
-    }
-    printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
-        lasted_year->data.title, lasted_year->data.player, lasted_year->data.genre, lasted_year->data.year);
-}
-
-void Play(List* plist){
-    printf("현재 실행중인 노래: %s\n", plist->cur->data.title);
-    int n = plist->cur->data.time;
-    int i = 0;
-    while(n > 0){
-        Sleep(500);
-        for(int i = 0; i < n; i++){
-            printf(".");
-        }
-        for(int k = n - i; k < n; k++){
-            printf("=");
-        }
-        printf("\n");
-        n--;
-    }
-}
-
 Node* SearchNode(List* plist){
     char search_title[50];
     printf("찾고자하는 노래 제목을 입력하세요\n");
     scanf("%s", search_title);
-    for(Node* p = plist->head->next; p != plist->head; p = p->next){
+    for(Node* p = plist->head; p != NULL; p = p->next){
         if(strcmp(search_title, p->data.title) == 0){
             return p;
         }
     }
     printf("찾고자하는 노래가 없습니다\n");
-    return NULL;
+    return 0;
 }
 
-Element DeleteNode(List* plist){
+Element RemoveNode(List* plist){
     if(plist->numOfData == 0){
         printf("List가 비어있습니다\n");
         exit(1);
@@ -143,6 +91,7 @@ Element DeleteNode(List* plist){
         before = before->next;
     }
     before->next = remove_node->next;
+    remove_node->next->pre = before;
     free(remove_node);
     plist->numOfData--;
     return remove_data;
@@ -157,35 +106,27 @@ void PreNode(List* plist){
     plist->cur = plist->cur->pre;
 }
 
+int GetListLength(List* plist){
+    return plist->numOfData;
+}
+
 void GoToFirst(List* plist){
-    plist->cur = plist->head->next;
+    plist->cur = plist->head;
 }
 
 void GoToLast(List* plist){
-    Node* p = plist->head->next;
-    while(p->next != plist->head){
+    Node* p = plist->head;
+    while(p->next != NULL){
         p = p->next;
     }
     plist->cur = p;
 }
 
-int GetListLength(List* plist){
-    return plist->numOfData;
-}
-
 void PrintGenre(List* plist){
     char temp;
-    if(plist->numOfData == 1){
-        printf("원하는 장르를 입력하세요\n");
-        scanf("%c", &temp);
-        if(plist->cur->data.genre == temp){
-            printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
-                plist->cur->data.title, plist->cur->data.player, plist->cur->data.genre, plist->cur->data.year);
-            printf("---------------------------------------------------------\n");
-        }
-    }
+    printf("원하는 장르를 입력하세요\n");
     scanf("%c", &temp);
-    for(Node* p = plist->head->next; p != plist->head; p = p->next){
+    for(Node* p = plist->head; p->next != NULL; p = p->next){
         if(p->data.genre == temp){
             printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
                 p->data.title, p->data.player, p->data.genre, p->data.year);
@@ -194,34 +135,51 @@ void PrintGenre(List* plist){
     }
 }
 
-void DeleteList(List* plist){
-    for(Node* p = plist->head->next; p != plist->head; p = p->next){
-        free(p->pre);
+void PrintLastMusic(List* plist){
+    Node* p = plist->head->next;
+    while(p != plist->head){
+        p = p->next;
     }
-    free(plist);
+    printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
+        p->data.title, p->data.player, p->data.genre, p->data.year);
+}
+
+void Play(){
+    int n = 10;
+    while(n > 0){
+        Sleep(1000);
+        int i;
+        for(i = 0; i < 10; i++){
+            printf(".");
+        }
+        for(int k = 10 - i; k < 10; k++){
+            printf("=");
+        }
+        printf("\n");
+        n--;
+    }
 }
 
 int main(){
-    List* list = (List*)malloc(sizeof(List));
+    List* list;
     InitList(list);
     Element data;
     Node* before;
+    Node* p;
     int temp = 0;
+    char play;
     while (1) {
-        printf("1. 프로그램 종료\n2. 입력\n3. 리스트 출력\n4. 리스트 길이 출력\n5. 노래 삭제\n");
-        printf("6. 노래재생\n7. 최근에 발표된 음악\n8. 같은 장르의 음악 찾기\n");
+        printf("1. 프로그램 종료\n2. 입력\n3. 리스트 출력\n4. 리스트 길이 출력\n5. 노래 삭제\n6. 장르출력\n");
         scanf("%d", &temp);
         printf("=======================================================================\n");
         switch (temp)
         {
         case 1:
-            DeleteList(list);
             return 0;
             break;
         case 2:
             printf("노래 제목, 가수, 장르, 출시연도를 입력하세요\n");
             scanf("%s %s %c %d", data.title, data.player, &data.genre, &data.year);
-            data.time = rand() % 15;
             InsertSortedData(list, data);
             break;
         case 3:
@@ -231,44 +189,57 @@ int main(){
             printf("리스트 길이: %d\n", GetListLength(list));
             break;
         case 5:
-            DeleteNode(list);
+            RemoveNode(list);
             break;
         case 6:
-        {
-            Node* p = list->head;
+            // 재생프로그램
             while(1){
-                char order;
-                printf("명령어를 입력해주세요 >(다음곡), <(이전곡), q(재생), 0(프로그램 종료), F, L\n");
-                scanf("%c", &order);
-                switch(order){
-                    case '<':
-                        PreNode(list);
-                        break;
-                    case '>':
-                        NextNode(list);
-                        break;
-                    case '0':
-                        return 0;
-                        break;
-                    case 'F':
-                        GoToFirst(list);
-                        break;
-                    case 'L':
-                        GoToLast(list);
-                        break;
-                    case 'q':
-                        Play(list);
-                        break;
+                if(list->head == NULL){
+                printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
+                    p->data.title, p->data.player, p->data.genre, p->data.year);
+                printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
+                    p->next->data.title, p->next->data.player, p->next->data.genre, p->next->data.year);
                 }
-                printf("=======================================================================\n");
+                else{
+                    printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
+                        p->pre->data.title, p->pre->data.player, p->pre->data.genre, p->pre->data.year);
+                    printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
+                        p->data.title, p->data.player, p->data.genre, p->data.year);
+                    printf("제목: %-15s\n가수: %-10s\n장르: %-3c\n출시연도: %-5d\n", 
+                        p->next->data.title, p->next->data.player, p->next->data.genre, p->next->data.year);
+                }
+                printf("명령어를 입력하세여 <, >, q, F/f, L/l, 0(재생종료)\n");
+                scanf("%c", &play);
+                switch (play)
+                {
+                case '<':
+                    if(p == NULL){
+                        return 0;
+                    }
+                    PreNode(list);
+                    break;
+                case '>':
+                    if(p->next == NULL){
+                        return 0;
+                    }
+                    NextNode(list);
+                    break;
+                case 'q':
+                    printf("현재 재생중인 곡: %s\n", p->data.title);
+                    Play();
+                    NextNode(list);
+                    break;
+                case '0':
+                    printf("재생을 종료합니다\n");
+                    return 0;
+                case 'L': case 'l':
+                    GoToLast(list);
+                    break;
+                case 'F': case 'f':
+                    GoToFirst(list);
+                    break;
+                }
             }
-            break;
-        }
-        case 7:
-            PrintLastMusic(list);
-            break;
-        case 8:
-            PrintGenre(list);
             break;
         default:
             break;
@@ -281,5 +252,3 @@ int main(){
 // Stay PostMalone B 2018
 // Dream imaginedragons T 2015
 // Amsterdam imagindragons T 2011
-// 이동하면 바로 재생하게 하기
-// 마지막에 프로그램 끝내면 다 free해주는 함수
