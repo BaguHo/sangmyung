@@ -58,7 +58,7 @@ void InsertSortedData(List* plist, Element data){
     new_node->data = data;
 
     Node* p = plist->head;
-    while(p != plist->head && strcmp(p->next->data.title, data.title) <= 0){
+    while(p != plist->head && strcmp(p->data.title, data.title) <= 0){
         p = p->next;
     }
     new_node->next = p->next;
@@ -217,7 +217,6 @@ int main(){
         case 1:
             DeleteList(list);
             return 0;
-            break;
         case 2:
             printf("노래 제목, 가수, 장르, 출시연도를 입력하세요\n");
             scanf("%s %s %c %d", data.title, data.player, &data.genre, &data.year);
@@ -248,8 +247,8 @@ int main(){
                         NextNode(list);
                         break;
                     case '0':
+                        DeleteList(list);
                         return 0;
-                        break;
                     case 'F':
                         GoToFirst(list);
                         break;
@@ -281,5 +280,3 @@ int main(){
 // Stay PostMalone B 2018
 // Dream imaginedragons T 2015
 // Amsterdam imagindragons T 2011
-// 이동하면 바로 재생하게 하기
-// 마지막에 프로그램 끝내면 다 free해주는 함수

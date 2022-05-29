@@ -1,0 +1,6 @@
+자바 이벤트 처리 방법은 크게 2가지로 나뉜다.
+1. class에서 implements하는 방법
+ class에서 implements하는 방법은 class내부에서 한 번의 @Override를 해준다.
+2. 익명클래스를 이용한 방법
+ 익명클래스를 이용하는 방법은 class에 implements를 해주지 않고 생성자 단게에서
+하나의 ActionEvent에 하나의 @Override를 해준다. 

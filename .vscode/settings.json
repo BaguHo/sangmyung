@@ -1,11 +1,12 @@
 {
-    "files.associations": {
-        "stdio.h": "c",
-        "stdlib.h": "c",
-        "system_error": "c",
-        "type_traits": "c",
-        "xlocale": "c",
-        "xstring": "c",
-        "xutility": "c"
-    }
+  "files.associations": {
+    "stdio.h": "c",
+    "stdlib.h": "c",
+    "system_error": "c",
+    "type_traits": "c",
+    "xlocale": "c",
+    "xstring": "c",
+    "xutility": "c",
+    "xiosbase": "cpp"
+  }
 }
