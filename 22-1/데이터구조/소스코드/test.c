@@ -4,8 +4,8 @@
 #include<memory.h>
 
 typedef struct{
+    char str[30];
     int count;
-    char str[20];
 }Element;
 
 typedef struct __node{
@@ -15,23 +15,21 @@ typedef struct __node{
 
 TreeNode* NewNode(Element item){
     TreeNode* temp = (TreeNode*)malloc(sizeof(TreeNode));
-    strcpy(temp->key.str, item.str); 
-    temp->key.count = item.count;
-    temp->left = temp->right = NULL;
+    temp->key = item;
+    temp->left = NULL;
+    temp->right = NULL;
     return temp;
 }
 
 TreeNode* Search(TreeNode* root, char *key){
-    TreeNode* p = root;
-    while(p != NULL){
-        if(strcmp(key, p->key.str) == 0)
-            return p;
-        else if(strcmp(key, p->key.str) == -1)
-            p = p->left;
-        else if(strcmp(key, p->key.str) == 1)
-            p = p->right;
-    }
-    return p;
+    if(root == NULL)
+        return NULL;
+    if(strcmp(key, root->key.str) == 0) 
+        return root;
+    else if (strcmp(key, root->key.str) == 1)
+        return Search(root->left, key);
+    else
+        return Search(root->right, key);
 }
 
 TreeNode* Insert(TreeNode* root, Element key){
@@ -91,104 +89,34 @@ TreeNode* DeleteNode(TreeNode* root, Element target){
 void Inorder(TreeNode* root){
     if(root != NULL){
         Inorder(root->left);
-        printf("word = %s\ncount = %d \n", root->key.str, root->key.count);
+        printf("str = %s\ncount = %d \n", root->key.str, root->key.count);
         printf("=============================\n");
         Inorder(root->right);
     }
 }
 
-int IsBalancedTree(TreeNode* root, int* height){
-    int l = 0;
-    int r = 0;
-    int left_height = 0, right_height = 0;
-    
-    if(root == NULL){
-        *height = 0;
-        return 1;
-    }
-
-    l = IsBalancedTree(root->left, &left_height);
-    r = IsBalancedTree(root->right, &right_height);
-    
-    if(left_height > right_height)
-        *height = left_height + 1;
-    else
-        *height = right_height + 1;
-
-    if(left_height - right_height > 1 || right_height - left_height > 1)
-        return 0;
-    else
-    // ???
-        return l && r;
+int Compare(char e1[], char e2[]) {
+    return strcmp(e1, e2);
 }
-
-TreeNode* max_node = NULL;
-int max;
-void GetMaxWord(TreeNode* ptr) {
-    if (ptr != NULL) {
-        GetMaxWord(ptr->left);
-        GetMaxWord(ptr->right);
-        if (ptr->key.count > max) {
-            max = ptr->key.count;
-            max_node = ptr;
-        }
-    }
-}
-
-void Fileout(TreeNode* p, FILE *fp_out) {
+void Fileout(TreeNode* p, FILE *fw) {
     if (p != NULL) {
-        Fileout(p->left,fp_out);
-        fprintf(fp_out, "word: %-6s \ncount: %2d\n", p->key.str, p->key.count);
-        Fileout(p->right,fp_out);
+        Fileout(p->left,fw);
+        fprintf(fw,"[ 예약어: %-6s  출현빈도: %2d번 ]\n", p->key.str, p->key.count);
+        Fileout(p->right,fw);
     }
 }
 
 int main(){
     TreeNode* root = NULL;
-    FILE *fp_in = fopen("bst_in.txt", "r");
-    FILE *fp_out = fopen("bst_out.txt", "w+");
-    char *target[11] = {"break", "case", "do", "else", "for", "if", "int", "return", "struct", "switch", "while"};
-    while(!feof(fp_in)){
-        char buf[300];  
-        fgets(buf, sizeof(buf), fp_in);
-        char *ptr = strtok(buf, " ");
-        while(ptr != NULL){
-            char reserve[200] = {0, };
-            int index = 0;
-            for(int i = 0; i < strlen(ptr); i++){
-                if(ptr[i] >= 'a' && ptr[i] <= 'z'){
-                    reserve[index++] = ptr[i];
-                }
-            }
-            for(int i = 0; i < 11; i++){
-                if(strcmp(reserve, target[i]) == 0){
-                    TreeNode* temp = Search(root, reserve);
-                    // 단어를 파일에서 찾았는데 트리에 없는 경우
-                    if(temp != NULL){
-                        temp->key.count++;
-                    }
-                    else{
-                        Element new_node;
-                        new_node.count = 1;
-                        strcpy(new_node.str, reserve);
-                        root = Insert(root, new_node);
-                    }
-                }
-            }
-            ptr = strtok(NULL, " ");                
-        }
-    }
-    Fileout(root, fp_out);
-
+    char temp[30];
     int num;
+
     while(1){
-        
         printf("===========================================\n");
         printf("0. 프로그램 종료\n");
         printf("1. 예약어 찾기\n");
         printf("2. 중위순회 출력\n");
         printf("3. 특정한 예약어 삭제\n");
-        printf("4. 가장 자주 나온 단어\n");
         scanf("%d", &num);
         switch (num)
         {
@@ -197,9 +125,59 @@ int main(){
             break;
         case 1:
         {
-            
-            fclose(fp_in);
-            fclose(fp_out);
+            FILE* fp = NULL;
+            FILE* fw = NULL;
+            fw = fopen("bst_out.txt", "w+");
+            fp = fopen("bst_in.txt", "r");
+
+            if (fp == NULL) {
+                printf("파일열기 실패\n");
+                return 0;
+            }
+
+            if (fw == NULL) {
+                printf("파일열기 실패\n");
+                return 0;
+            }
+
+            char* arr[11] = { {"break"}, {"case"}, {"do"}, {"else"}, {"for"}, {"if"},
+                {"int"}, {"return"}, {"struct"}, {"switch"}, {"while"} }; 
+
+            Element tmp;
+
+            TreeNode* root = NULL;
+
+            while (!feof(fp)) {
+                char str[300];
+                fgets(str, sizeof(str), fp); 
+                char* ptr = strtok(str, " "); 
+                while (ptr != NULL) {
+                    char temp[200] = { 0, };
+                    int index = 0;
+
+                    for (int i = 0; i < strlen(ptr); i++) {
+                        if (ptr[i] >= 'a' && ptr[i] <= 'z') { 
+                        temp[index++] = ptr[i];
+                        }
+                    }
+
+                    for (int i = 0; i < 11; i++) {
+                        if (Compare(temp, arr[i]) == 0) { 
+                            TreeNode* temp = Search(root, temp); 
+
+                            if (temp != NULL)
+                                temp->key.count++; 
+                            else { 
+                                tmp.count = 1;
+                                strcpy(tmp.str, temp);
+                                root = Insert(root, tmp);
+                            }
+                        }
+                    }
+                    ptr = strtok(NULL, " "); 
+                }
+            }
+            Fileout(root, fw);
             break;
         }
         case 2:
@@ -218,10 +196,6 @@ int main(){
             DeleteNode(root, del_node);
             break;
         }
-        case 4:
-            max = root->key.count;
-            GetMaxWord(root);
-            break;
         default:
             break;
         }

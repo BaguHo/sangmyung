@@ -39,7 +39,7 @@ TreeNode* search(TreeNode* node, char *key) {
     
     if (strcmp(key, node->key) == 0) {
         node->fre++;
-        return;
+        return 0;
     }
 
     else if (strcmp(key, node->key) == -1) {
@@ -89,12 +89,12 @@ TreeNode* findmax(TreeNode* node) {
             maximum->fre = node->fre;
         }
     }
-    return;
+    return 0;
 }
 
 int main(void) {
     FILE* fp1 = fopen("bst_in.txt", "r");
-    FILE* fp2 = fopen("bst_out.txt", "w");
+    FILE* fp2 = fopen("bst_out.txt", "w+");
     if (fp1 == NULL) {
         printf("파일이 존재하지 않습니다.\n");
         exit(1);
