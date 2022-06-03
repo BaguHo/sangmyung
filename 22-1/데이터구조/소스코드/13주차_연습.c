@@ -62,9 +62,9 @@ TreeNode* GetMaximumValueNode(TreeNode* root){
 
 TreeNode* DeleteNode(TreeNode* root, Element target){
     if(root == NULL)    return root;
-    if(target.count < root->key.count)
+    if(strcmp(target.count, root->key.count) == -1)
         root->left = DeleteNode(root->left, target);
-    else if(target.count > root->key.count)
+    else if(strcmp(target.count, root->key.count) == 1)
         root->right = DeleteNode(root->right, target);
     // target == root->key
     else{
@@ -221,6 +221,7 @@ int main(){
         case 4:
             max = root->key.count;
             GetMaxWord(root);
+            printf("가장 많이 나온 개수: %d\n", max);
             break;
         default:
             break;
